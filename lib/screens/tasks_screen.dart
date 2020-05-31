@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:provider/provider.dart';
 import 'package:theapp/components/add_task_screen.dart';
 import 'package:theapp/constants.dart';
 import 'package:theapp/components/custom_button.dart';
 import 'package:theapp/components/task_list_view.dart';
+import 'package:theapp/models/task_data.dart';
+import 'package:theapp/models/tasks.dart';
 
-class TasksScreen extends StatelessWidget {
-  final tasksList = [
-    {"text": "⚡ Item 1", "isComplete": false},
-    {"text": "🐱‍ Item 2", "isComplete": false},
-    {"text": "🦄 Item 3", "isComplete": false},
-  ];
+class TasksScreen extends StatefulWidget {
+  @override
+  _TasksScreenState createState() => _TasksScreenState();
+}
 
+class _TasksScreenState extends State<TasksScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +72,7 @@ class TasksScreen extends StatelessWidget {
                             height: 15.0,
                           ),
                           Text(
-                            '12 Tasks',
+                            '${Provider.of<TaskData>(context).taskLength()} Tasks',
                             style: kSubStyle,
                           ),
                         ],
@@ -93,9 +95,7 @@ class TasksScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Expanded(
-                        child: TaskListView(
-                          tasksList: tasksList,
-                        ),
+                        child: TaskListView(),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -110,20 +110,21 @@ class TasksScreen extends StatelessWidget {
                               icon: Icons.add,
                               ontap: () {
                                 showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    builder: (context) {
-                                      return SingleChildScrollView(
-                                        child: Container(
-                                          color: Color(0xff1d5a76),
-                                          padding: EdgeInsets.only(
-                                              bottom: MediaQuery.of(context)
-                                                  .viewInsets
-                                                  .bottom),
-                                          child: AddTaskScreen(),
-                                        ),
-                                      );
-                                    });
+                                  context: context,
+                                  isScrollControlled: true,
+                                  builder: (context) {
+                                    return SingleChildScrollView(
+                                      child: Container(
+                                        color: Color(0xff1d5a76),
+                                        padding: EdgeInsets.only(
+                                            bottom: MediaQuery.of(context)
+                                                .viewInsets
+                                                .bottom),
+                                        child: AddTaskScreen(),
+                                      ),
+                                    );
+                                  },
+                                );
                               },
                             ),
                           ),

@@ -1,25 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:provider/provider.dart';
 import 'package:theapp/components/custom_button.dart';
+import 'package:theapp/models/task_data.dart';
 
 class AddTaskScreen extends StatelessWidget {
-  const AddTaskScreen({
-    Key key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    // return Container(
-    //   color: Colors.white,
-    //   child: Container(
-    // decoration: BoxDecoration(
-    //   borderRadius: BorderRadius.only(
-    //     topLeft: Radius.circular(50.0),
-    //   ),
-    // ),
-    //   ),
-    // );
-
+    String taskTitle;
     return Container(
       child: Row(
         children: <Widget>[
@@ -72,11 +60,19 @@ class AddTaskScreen extends StatelessWidget {
                               decoration: InputDecoration(
                                 hintText: 'Enter your Task',
                               ),
+                              onChanged: (newValue) {
+                                taskTitle = newValue;
+                              },
                             ),
                           ),
                         ),
                         CustomAddButton(
                           icon: FlutterIcons.add_to_list_ent,
+                          ontap: () {
+                            Provider.of<TaskData>(context, listen: false)
+                                .addTask(taskTitle);
+                            Navigator.pop(context);
+                          },
                         ),
                       ],
                     ),
